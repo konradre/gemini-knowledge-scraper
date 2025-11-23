@@ -16,6 +16,12 @@ Banned categories (Section 2.3):
 from typing import List, Dict, Optional, Tuple
 from apify_client import ApifyClient
 import re
+from .scraper_library import (
+    get_scraper_library,
+    get_scrapers_by_budget,
+    get_scrapers_by_target_type,
+    score_scraper_production
+)
 
 
 # ========== BANNED PATTERNS (Challenge Compliance) ==========
@@ -171,7 +177,8 @@ def score_scraper(actor: Dict, budget_mode: str = 'optimal') -> float:
 def select_best_scrapers(
     actors: List[Dict],
     budget_mode: str = 'optimal',
-    top_n: int = 3
+    top_n: int = 3,
+    target_type: str = 'general'
 ) -> List[Dict]:
     """
     Select the best N scrapers from a list, ordered by score.
@@ -180,14 +187,15 @@ def select_best_scrapers(
         actors: List of actor dictionaries (already banned-filtered)
         budget_mode: 'minimal', 'optimal', or 'premium'
         top_n: Number of top scrapers to return
+        target_type: Type of target website
 
     Returns:
         List of top N scrapers, sorted by score (descending)
     """
-    # Score all actors
+    # Score all actors using production algorithm
     scored = []
     for actor in actors:
-        score = score_scraper(actor, budget_mode)
+        score = score_scraper_production(actor, budget_mode, target_type)
         scored.append({
             'actor': actor,
             'score': score
@@ -265,11 +273,12 @@ async def find_and_select_scrapers(
     # Classify target
     target_type = classify_target(target)
 
-    # Use whitelist of known scrapers (MVP implementation)
-    # NOTE: In production, this would query Apify Store API
-    actors = KNOWN_SCRAPERS.copy()
+    # Get production scraper library (Challenge-compliant only)
+    actors = get_scraper_library()
 
-    print(f"🔍 Using {len(actors)} whitelisted scrapers for target type '{target_type}'")
+    print(f"🔍 Production library: {len(actors)} Challenge-compliant scrapers")
+    print(f"   Target type: {target_type}")
+    print(f"   Budget mode: {budget_mode}")
 
     # CRITICAL: Filter banned scrapers
     allowed_actors = filter_banned_scrapers(actors)
@@ -277,13 +286,13 @@ async def find_and_select_scrapers(
     if not allowed_actors:
         raise ValueError(f"❌ No allowed scrapers found for target type '{target_type}'. All {len(actors)} scrapers were banned.")
 
-    # Select best scrapers
-    selected = select_best_scrapers(allowed_actors, budget_mode, top_n)
+    # Select best scrapers using production scoring
+    selected = select_best_scrapers(allowed_actors, budget_mode, top_n, target_type)
 
     print(f"✅ Selected {len(selected)} scrapers:")
     for i, actor in enumerate(selected, 1):
         actor_id = actor.get('id', 'unknown')
-        score = score_scraper(actor, budget_mode)
+        score = score_scraper_production(actor, budget_mode, target_type)
         print(f"   {i}. {actor_id} (score: {score:.1f})")
 
     return selected, target_type
