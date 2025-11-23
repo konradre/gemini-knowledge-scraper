@@ -278,7 +278,7 @@ def generate_query_guide(
 
     guide = f"""# Query Guide: {corpus_name}
 
-Your knowledge base has been created successfully! 🎉
+Your knowledge base has been created successfully!
 
 ## Knowledge Base Details
 
@@ -289,13 +289,13 @@ Your knowledge base has been created successfully! 🎉
 
 ---
 
-## 📚 Official Documentation
+## Official Documentation
 
 **Google Gemini File Search documentation:**
 - https://ai.google.dev/gemini-api/docs/file-search
 - https://ai.google.dev/api/file-search
 
-⚠️ **CRITICAL:** You must use the **SAME Gemini API key** you provided to the Apify actor. File Search Stores are tied to the API key that created them.
+**CRITICAL:** You must use the **SAME Gemini API key** you provided to the Apify actor. File Search Stores are tied to the API key that created them.
 
 ---
 
