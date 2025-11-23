@@ -16,20 +16,23 @@
       "description": "Max pages to scrape",
       "default": 100,
       "minimum": 1,
-      "maximum": 2000
+      "maximum": 2000,
+      "editor": "number"
     },
     "scraper_budget": {
       "title": "Scraper Budget",
       "type": "string",
       "description": "Cost optimization strategy",
       "enum": ["minimal", "optimal", "premium"],
-      "default": "optimal"
+      "default": "optimal",
+      "editor": "select"
     },
     "corpus_name": {
       "title": "Knowledge Base Name",
       "type": "string",
       "description": "Name for Gemini File Search Store",
-      "default": "scraped-knowledge"
+      "default": "scraped-knowledge",
+      "editor": "textfield"
     },
     "gemini_api_key": {
       "title": "Gemini API Key",
