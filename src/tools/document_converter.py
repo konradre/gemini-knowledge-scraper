@@ -247,10 +247,19 @@ def convert_dataset_to_documents(
 
     for i, item in enumerate(dataset_items):
         url = item.get(url_field, f'unknown-{i}')
-        html = item.get(html_field, '')
+
+        # Try multiple field names (different scrapers use different fields)
+        html = (
+            item.get(html_field, '') or           # Default field
+            item.get('html', '') or                # Standard HTML field
+            item.get('text', '') or                # Text content field
+            item.get('markdown', '') or            # Markdown field
+            item.get('content', '') or             # Generic content field
+            item.get('crawl', {}).get('html', '')  # Nested HTML field
+        )
 
         if not html:
-            print(f"⚠️  Skipping {url} - no HTML content")
+            print(f"⚠️  Skipping {url} - no content in any field (tried: {html_field}, html, text, markdown, content, crawl.html)")
             continue
 
         # Generate filename from index
