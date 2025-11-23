@@ -10,10 +10,10 @@ Complete workflow:
 6. Generate query guide
 7. Return corpus metadata + pricing
 
-BORG patterns:
-- Skills-first progressive disclosure (75% token reduction)
-- Hook-based enforcement (zero bypass)
-- Banned filter (100% compliance)
+Architecture:
+- Skills-based modular design (organized in .claude/skills/)
+- Hook-based validation (startup enforcement)
+- Challenge compliance filter (100% banned scraper blocking)
 """
 
 from apify import Actor

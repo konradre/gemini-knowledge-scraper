@@ -1,7 +1,7 @@
 """
 Skill Enforcement Hooks for Gemini Knowledge Scraper
 
-BORG L2.5 Pattern: Hook-based enforcement
+Startup validation and compliance enforcement:
 - Validates skills directory structure
 - Ensures BANNED_PATTERNS.md is loaded before scraper selection
 - Zero bypass possibility (runs at startup)

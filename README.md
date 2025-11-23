@@ -186,11 +186,11 @@ Your Apify subscription plan determines automatic discounts:
 
 ## Architecture
 
-### BORG Patterns Used
+### Architecture Patterns
 
-1. **Skills-First Disclosure** - `.claude/skills/` directory with 3 skills
-2. **Hook Enforcement** - `src/hooks/skill_enforcement.py` validates at startup
-3. **Banned Filter** - `src/tools/scraper_selector.py` blocks all prohibited scrapers
+1. **Skills-Based Organization** - `.claude/skills/` directory with 3 modular skills
+2. **Startup Validation** - `src/hooks/skill_enforcement.py` validates configuration at startup
+3. **Challenge Compliance Filter** - `src/tools/scraper_selector.py` blocks all prohibited scrapers
 
 ### Tech Stack
 
@@ -207,7 +207,7 @@ gemini-file-search-builder/
 │   ├── actor.json          # Actor configuration
 │   └── INPUT_SCHEMA.json   # Input validation schema
 ├── .claude/
-│   └── skills/             # BORG L2.5 skills
+│   └── skills/             # Modular skill definitions
 │       ├── apify-scraper-selection/
 │       ├── document-conversion/
 │       └── gemini-file-upload/
