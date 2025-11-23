@@ -215,33 +215,23 @@ async def main():
         Actor.log.info(f"   Files: {gemini_corpus['files_indexed']}")
         Actor.log.info(f"   Cost: ${gemini_corpus['cost_estimate_usd']:.4f}")
 
-        # ========== PHASE 5: PRICING ==========
+        # ========== PHASE 5: PRICING (PER-PAGE MODEL) ==========
 
-        Actor.log.info(f"\n💰 Phase 5: Calculate Pricing")
+        Actor.log.info(f"\n💰 Phase 5: Per-Page Charging")
 
-        # Determine tier based on pages scraped
+        # Charge per page processed (pay-per-event)
         pages_count = len(scraped_items)
-        if pages_count <= 50:
-            tier = 'small'
-            tier_price = 8.00
-            event_name = 'knowledge-base-small'
-        elif pages_count <= 200:
-            tier = 'medium'
-            tier_price = 12.00
-            event_name = 'knowledge-base-medium'
-        else:
-            tier = 'large'
-            tier_price = 18.00
-            event_name = 'knowledge-base-large'
+        price_per_page = 0.0025  # Base price, Store discounts applied automatically
 
-        Actor.log.info(f"Pricing tier: {tier.upper()}")
-        Actor.log.info(f"  Pages scraped: {pages_count}")
-        Actor.log.info(f"  Tier price: ${tier_price:.2f}")
-        Actor.log.info(f"  Gemini indexing cost: ${gemini_corpus['cost_estimate_usd']:.4f}")
-        Actor.log.info(f"  Total charge: ${tier_price:.2f}")
+        Actor.log.info(f"  Pages indexed: {pages_count}")
+        Actor.log.info(f"  Base price: ${price_per_page}/page")
+        Actor.log.info(f"  Estimated cost: ${0.02 + (pages_count * price_per_page):.2f}")
+        Actor.log.info(f"  (Includes ~$0.02 actor start + ${pages_count * price_per_page:.2f} for pages)")
+        Actor.log.info(f"  💡 Store discounts apply automatically based on your Apify plan")
 
-        # Charge user based on tier (pay-per-event pricing)
-        await Actor.charge(event_name=event_name, count=1)
+        # Charge for each page processed (Apify applies Store discounts automatically)
+        if pages_count > 0:
+            await Actor.charge(event_name='page-processed', count=pages_count)
 
         # ========== PHASE 6: OUTPUT ==========
 
@@ -278,11 +268,12 @@ async def main():
                 'cost_estimate_usd': gemini_corpus['cost_estimate_usd']
             },
             'pricing': {
-                'tier': tier,
-                'tier_price': tier_price,
-                'pages_count': pages_count,
-                'gemini_indexing_cost': gemini_corpus['cost_estimate_usd'],
-                'event_charged': event_name
+                'model': 'pay-per-page',
+                'pages_processed': pages_count,
+                'price_per_page': price_per_page,
+                'start_fee': 0.02,
+                'estimated_total': round(0.02 + (pages_count * price_per_page), 2),
+                'note': 'Store discounts applied automatically based on your Apify plan'
             },
             'created_at': gemini_corpus['created_at'],
             'query_instructions': 'See query-guide.md in Key-Value Store for detailed usage instructions'
@@ -299,7 +290,7 @@ async def main():
         Actor.log.info(f"")
         Actor.log.info(f"Knowledge base created: {gemini_corpus['file_search_store_name']}")
         Actor.log.info(f"Files indexed: {gemini_corpus['files_indexed']}")
-        Actor.log.info(f"Tier: {tier.upper()} (${tier_price:.2f})")
+        Actor.log.info(f"Pages processed: {pages_count} × ${price_per_page} = ${pages_count * price_per_page:.2f}")
         Actor.log.info(f"")
         Actor.log.info(f"📖 See 'query-guide.md' in Key-Value Store for usage instructions")
         Actor.log.info(f"")

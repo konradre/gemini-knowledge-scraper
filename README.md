@@ -121,15 +121,48 @@ print(response.text)  # Answer with automatic citations
 
 ## Pricing & Costs
 
-### Actor Costs (Pay Once)
-- **Scraping**: Apify platform credits (varies by scraper)
-- **Indexing**: $0.15 per 1M tokens (one-time)
+This Actor uses **pay-per-page pricing** for transparent, predictable costs:
 
-### Query Costs (Pay Per Use)
-- **Storage**: FREE (indefinite, no storage fees)
-- **Queries**: ~$0.001 per query (gemini-2.5-flash)
+### Base Pricing
 
-**Example**: Index 100 documentation pages (~100K tokens) = $0.015 one-time cost, then query forever.
+- **Actor start**: ~$0.02 per run (one-time)
+- **Page processed**: $0.0025 per page (base price)
+
+### Store Discount Tiers
+
+Your Apify subscription plan determines automatic discounts:
+
+| Plan | Monthly Cost | Discount | Price/Page | 100 Pages Total |
+|------|--------------|----------|------------|-----------------|
+| **Free** | $0 | 0% | $0.0025 | **$0.27** |
+| **Starter** | $39 | 10% (BRONZE) | $0.00225 | **$0.245** |
+| **Scale** | $199 | 20% (SILVER) | $0.002 | **$0.22** |
+| **Business** | $999 | 30% (GOLD) | $0.00175 | **$0.195** |
+
+💰 **Upgrade your Apify plan to save up to 30% on processing costs!**
+
+### Example Costs
+
+| Pages | FREE Tier | GOLD Tier | Savings |
+|-------|-----------|-----------|---------|
+| 10 | $0.045 | $0.035 | 22% |
+| 50 | $0.145 | $0.11 | 24% |
+| 100 | $0.27 | $0.195 | 28% |
+| 500 | $1.27 | $0.895 | 30% |
+
+*Prices include ~$0.02 actor start fee*
+
+### What You DON'T Pay
+
+✅ **Gemini API tokens** - You provide your own API key
+✅ **Apify platform usage** - You manage your own credits
+✅ **Storage fees** - Gemini File Search storage is free
+
+### Comparison
+
+- **10x cheaper** than premium AI collectors ($0.0025 vs $0.25/page)
+- **Gemini-optimized** vs generic scrapers
+- **Transparent billing** - Only successful pages charged
 
 ## Challenge Compliance
 
