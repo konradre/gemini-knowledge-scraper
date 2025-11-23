@@ -289,22 +289,49 @@ Your knowledge base has been created successfully! 🎉
 
 ---
 
-## How to Query
+## 📚 Official Documentation
 
-⚠️ **IMPORTANT:** You must use the **SAME Gemini API key** you provided to the Apify actor. File Search Stores are tied to the API key that created them.
+**Google Gemini File Search documentation:**
+- https://ai.google.dev/gemini-api/docs/file-search
+- https://ai.google.dev/api/file-search
 
-### Option 1: Python SDK (Recommended)
+⚠️ **CRITICAL:** You must use the **SAME Gemini API key** you provided to the Apify actor. File Search Stores are tied to the API key that created them.
+
+---
+
+## How to Query Your Knowledge Base
+
+Google supports multiple methods for querying File Search Stores. Choose the one that fits your workflow:
+
+### Method 1: Google AI Studio (Web Interface - Easiest)
+
+**No coding required!**
+
+1. Visit **https://aistudio.google.com**
+2. Sign in with the **same Google account** (same API key)
+3. Create a new chat
+4. Click **"Add resources"** → **"File Search Stores"**
+5. Select **`{corpus_name}`** from your stores list
+6. Ask questions naturally - citations included automatically!
+
+**This is the easiest method for most users.**
+
+---
+
+### Method 2: Python SDK (For Developers)
+
+**Official Gemini Python SDK example:**
 
 ```python
 from google import genai
 from google.genai import types
 
-# Initialize client with the SAME API key you used in the Apify actor
+# IMPORTANT: Use the SAME API key you provided to Apify actor
 client = genai.Client(api_key="YOUR_GEMINI_API_KEY")
 
-# Query your knowledge base
+# Query your knowledge base (per Google's documentation)
 response = client.models.generate_content(
-    model='gemini-2.0-flash',
+    model='gemini-2.5-flash',  # or gemini-2.5-pro
     contents='Your question here',
     config=types.GenerateContentConfig(
         tools=[
@@ -319,29 +346,29 @@ response = client.models.generate_content(
 
 print(response.text)
 
-# Citations are included automatically
-if response.grounding_metadata and response.grounding_metadata.grounding_chunks:
+# Access citations (optional)
+if response.candidates[0].grounding_metadata:
     print("\\nSources:")
-    for chunk in response.grounding_metadata.grounding_chunks:
+    for chunk in response.candidates[0].grounding_metadata.grounding_chunks:
         print(f"  - {{chunk.retrieved_context.title}}")
 ```
 
-### Option 2: Google AI Studio (Web Interface)
+**Install SDK:** `pip install google-genai`
 
-1. Go to https://aistudio.google.com
-2. Login with the same Google account (same API key)
-3. Create a new chat
-4. Click "Add resources" → "File Search Stores"
-5. Select `{corpus_name}` from the list
-6. Ask your questions!
+**Full SDK docs:** https://ai.google.dev/gemini-api/docs/quickstart?lang=python
 
-### Option 3: Mobile Apps
+---
 
-Use any Gemini mobile app (iOS/Android):
-1. Login with same Google account
-2. Start a chat
-3. Reference your knowledge base by name
-4. Ask questions naturally
+### Method 3: Mobile Apps (iOS/Android)
+
+**Gemini mobile apps support File Search:**
+
+1. Download Gemini app (iOS/Android)
+2. Sign in with the **same Google account**
+3. Start a new chat
+4. Your File Search stores are automatically available
+5. Reference by name: "{corpus_name}"
+6. Ask questions naturally
 
 ---
 
