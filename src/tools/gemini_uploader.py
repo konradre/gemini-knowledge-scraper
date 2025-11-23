@@ -184,7 +184,7 @@ async def upload_to_gemini(
         # Later, user can query from ANY device with same API key:
         >>> client = genai.Client(api_key="api_key")
         >>> response = client.models.generate_content(
-        ...     model='gemini-2.0-flash',
+        ...     model='gemini-2.5-flash',
         ...     contents='Your question here',
         ...     config=types.GenerateContentConfig(
         ...         tools=[types.Tool(
@@ -331,7 +331,7 @@ client = genai.Client(api_key="YOUR_GEMINI_API_KEY")
 
 # Query your knowledge base (per Google's documentation)
 response = client.models.generate_content(
-    model='gemini-2.5-flash',  # or gemini-2.5-pro
+    model='gemini-2.5-flash',  # or gemini-3-pro for higher quality
     contents='Your question here',
     config=types.GenerateContentConfig(
         tools=[
@@ -389,7 +389,7 @@ queries = [
 for query in queries:
     print(f"\\nQ: {{query}}")
     response = client.models.generate_content(
-        model='gemini-2.0-flash',
+        model='gemini-2.5-flash',
         contents=query,
         config=types.GenerateContentConfig(
             tools=[types.Tool(file_search=types.FileSearch(
