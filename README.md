@@ -13,6 +13,7 @@ This Apify actor creates a **permanent, queryable knowledge base** from any webs
 ### Key Features
 
 - 🧠 **Automatic RAG Pipeline** - Scrape → Clean → Upload → Query (all in one run)
+- 📄 **Multi-Format Support** - Indexes web pages + PDFs, DOCX, XLSX from documentation sites
 - 📚 **Built-in Citations** - Every answer includes source documents
 - ♾️ **Unlimited Free Queries** - Pay once to scrape, query forever (no storage fees)
 - 🎯 **Challenge Compliant** - 100% banned scraper filtering (Instagram, Amazon, Google Maps, etc.)
