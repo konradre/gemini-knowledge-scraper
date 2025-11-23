@@ -48,6 +48,7 @@ Website URL → Scraper Selection → Content Extraction → Document Conversion
 **Gemini API Key** (required):
 - Visit https://aistudio.google.com/apikey
 - Create new API key (free tier available)
+- ⚠️ **Important:** Use the SAME key you'll use to query the knowledge base later. File Search Stores are tied to the creating API key.
 
 **Apify Token** (required):
 - Visit https://console.apify.com/settings/integrations
@@ -242,6 +243,9 @@ A: Up to 2,000 pages (configurable), ~2GB total content.
 
 **Q: Do I need a Google Cloud account?**
 A: No! Just a Gemini API key from aistudio.google.com (free tier available).
+
+**Q: Can I use a different API key to query the knowledge base?**
+A: No. File Search Stores are tied to the API key that created them. You must use the SAME Gemini API key for both creating and querying the knowledge base. This ensures your data remains private and accessible only to you.
 
 **Q: How accurate are the citations?**
 A: Gemini File Search automatically cites source documents with chunk-level precision.
