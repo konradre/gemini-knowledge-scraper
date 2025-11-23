@@ -71,12 +71,14 @@ async def execute_scraper_with_fallback(
                 Actor.log.warning(f"🚫 Hook blocked: {message}")
                 continue
 
-            # Run scraper
+            # Run scraper with document download enabled
             run = apify_client.actor(scraper_id).call(
                 run_input={
                     'startUrls': [{'url': target}],
-                    'maxPagesPerCrawl': max_pages,
-                    'maxConcurrency': 5
+                    'maxCrawlPages': max_pages,  # Fixed parameter name
+                    'maxConcurrency': 5,
+                    'saveFiles': True,  # Download PDFs, DOCX, XLSX, etc.
+                    'saveMarkdown': True  # Get markdown for better formatting
                 }
             )
 
@@ -94,6 +96,7 @@ async def execute_scraper_with_fallback(
                     'success': True,
                     'data': items,
                     'scraper_used': scraper_id,
+                    'defaultKeyValueStoreId': run.get('defaultKeyValueStoreId'),
                     'errors': []
                 }
             else:
@@ -177,8 +180,43 @@ async def main():
 
         scraped_items = scrape_result['data']
         scraper_used = scrape_result['scraper_used']
+        kv_store_id = scrape_result.get('defaultKeyValueStoreId')
 
         Actor.log.info(f"✅ Scraped {len(scraped_items)} pages using {scraper_used}")
+
+        # ========== PHASE 2.5: DOWNLOAD FILES FROM SCRAPER ==========
+
+        downloaded_files = []
+        if kv_store_id:
+            Actor.log.info(f"\n📥 Checking for downloaded files (PDFs, DOCX, etc.)...")
+
+            # Check KV store for downloaded files
+            kv_client = apify_client.key_value_store(kv_store_id)
+
+            # Look for file items in dataset
+            file_items = [item for item in scraped_items if item.get('type') == 'file']
+
+            if file_items:
+                Actor.log.info(f"   Found {len(file_items)} downloaded documents")
+
+                for file_item in file_items:
+                    file_url = file_item.get('fileUrl')
+                    if file_url:
+                        # Extract filename from URL
+                        filename = file_url.split('/')[-1]
+                        file_path = docs_dir / filename
+
+                        try:
+                            # Download file from KV store
+                            file_record = kv_client.get_record(filename)
+                            if file_record and file_record.get('value'):
+                                file_path.write_bytes(file_record['value'])
+                                downloaded_files.append(file_path)
+                                Actor.log.info(f"   ✅ Downloaded: {filename}")
+                        except Exception as e:
+                            Actor.log.warning(f"   ⚠️  Failed to download {filename}: {e}")
+            else:
+                Actor.log.info(f"   No downloadable files found")
 
         # ========== PHASE 3: DOCUMENT CONVERSION ==========
 
@@ -191,13 +229,19 @@ async def main():
             html_field='html'
         )
 
-        if not documents:
+        if not documents and not downloaded_files:
             raise RuntimeError("No valid documents created from scraped data")
 
-        Actor.log.info(f"✅ Created {len(documents)} documents")
+        # Combine text documents + downloaded files for Gemini upload
+        all_documents = documents + downloaded_files
 
-        # Calculate indexing cost estimate
-        indexing_cost = calculate_indexing_cost(documents)
+        Actor.log.info(f"✅ Prepared {len(all_documents)} documents for indexing:")
+        Actor.log.info(f"   - Text documents: {len(documents)}")
+        Actor.log.info(f"   - Downloaded files (PDF/DOCX/etc): {len(downloaded_files)}")
+
+        # Calculate indexing cost estimate (text documents only for now)
+        if documents:
+            indexing_cost = calculate_indexing_cost(documents)
 
         # ========== PHASE 4: UPLOAD TO GEMINI ==========
 
@@ -205,7 +249,7 @@ async def main():
 
         gemini_corpus = await upload_to_gemini(
             gemini_api_key=input_data['gemini_api_key'],
-            document_paths=documents,
+            document_paths=all_documents,  # Upload both text AND binary files
             corpus_name=input_data.get('corpus_name', 'scraped-knowledge')
         )
 
