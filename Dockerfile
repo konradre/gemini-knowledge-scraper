@@ -27,5 +27,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy actor code (including .claude/ directory)
 COPY . ./
 
-# Run actor
-CMD ["python", "src/main.py"]
+# Run actor via proper entry point
+CMD ["python", "__main__.py"]
