@@ -246,6 +246,30 @@ A: No! Just a Gemini API key from aistudio.google.com (free tier available).
 **Q: How accurate are the citations?**
 A: Gemini File Search automatically cites source documents with chunk-level precision.
 
+**Q: Is web scraping legal?**
+A: Web scraping is generally legal for publicly available, non-personal data. Always respect robots.txt and website terms of service. For personal data, ensure GDPR compliance. Consult legal counsel if unsure. Learn more: [Is web scraping legal?](https://blog.apify.com/is-web-scraping-legal/)
+
+## Integrations
+
+Connect with popular automation platforms and cloud services:
+
+- **Make, Zapier, Slack** - Automate workflows
+- **Webhooks** - Trigger actions when runs complete
+- **Google Sheets, Google Drive** - Export and sync data
+- **API Access** - Programmatic control via Python/JavaScript
+
+See [all integrations](https://docs.apify.com/platform/integrations)
+
+## Using with AI Agents
+
+This Actor is compatible with Model Context Protocol (MCP) and can be used with AI agents:
+
+- **Claude Desktop** - Use via Apify MCP server
+- **LibreChat** - Integrate into chat workflows
+- **Custom MCP clients** - Programmatic access
+
+AI agents can trigger this Actor automatically based on user queries. See the [MCP documentation](https://docs.apify.com/platform/integrations/mcp) for setup instructions.
+
 ## Support & Contributing
 
 - **Issues**: GitHub Issues

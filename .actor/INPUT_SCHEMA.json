@@ -1,5 +1,6 @@
 {
   "title": "Gemini File Search Builder",
+  "description": "Build permanent Gemini File Search RAG knowledge bases from any website. Get unlimited AI queries with automatic citations. Pay once to scrape, query forever for free. For details, see <a href='https://github.com/konradre/gemini-file-search-builder' target='_blank' rel='noopener'>README</a>.",
   "type": "object",
   "schemaVersion": 1,
   "properties": {
@@ -13,8 +14,8 @@
     "max_pages": {
       "title": "Maximum Pages",
       "type": "integer",
-      "description": "Max pages to scrape",
-      "default": 100,
+      "description": "Maximum number of pages to scrape and index",
+      "default": 10,
       "minimum": 1,
       "maximum": 2000,
       "editor": "number"
