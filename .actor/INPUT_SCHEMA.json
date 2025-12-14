@@ -1,6 +1,6 @@
 {
   "title": "Gemini File Search Builder",
-  "description": "Build permanent Gemini File Search RAG knowledge bases from any website. Get unlimited AI queries with automatic citations. <b>Pricing: $0.02 start + $0.0015/page</b> (Store discounts up to 30% off). For details, see <a href='https://github.com/konradre/gemini-file-search-builder' target='_blank' rel='noopener'>README</a>.",
+  "description": "Build permanent Gemini File Search RAG knowledge bases from any website. Get unlimited AI queries with automatic citations. <b>Actor fees: $0.02 start + $0.0015/page</b> (Store discounts up to 30%). <b>Additional costs:</b> Apify scrapers + Gemini indexing (see README for full breakdown).",
   "type": "object",
   "schemaVersion": 1,
   "properties": {

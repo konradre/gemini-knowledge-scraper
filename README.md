@@ -4,7 +4,7 @@
 
 ## What You Get
 
-Scrape once, query forever. This actor builds permanent Gemini File Search RAG knowledge bases from any website - no ongoing costs, unlimited AI-powered Q&A with automatic source citations.
+Scrape once, query forever. This actor builds permanent Gemini File Search RAG knowledge bases from any website. After initial indexing costs (actor + scraper + Gemini), storage and queries are free indefinitely.
 
 **Perfect for:**
 - Creating AI chatbots from documentation
@@ -13,9 +13,9 @@ Scrape once, query forever. This actor builds permanent Gemini File Search RAG k
 - Querying technical docs with natural language
 
 **Key benefits:**
-- ✅ **One-time scraping** - Pay once ($0.0015/page), query unlimited times
+- ✅ **One-time scraping** - Actor fee: $0.0015/page (plus Apify scraper + Gemini costs)
 - ✅ **Automatic citations** - Every answer includes sources
-- ✅ **No ongoing costs** - Gemini File Search storage is persistent
+- ✅ **No storage fees** - Gemini File Search storage is free and persistent
 - ✅ **Cross-platform** - Query from Python, web, or mobile
 - ✅ **Challenge compliant** - 100% banned scraper filtering
 
@@ -23,7 +23,7 @@ Scrape once, query forever. This actor builds permanent Gemini File Search RAG k
 
 - 🧠 **Automatic RAG Pipeline** - Scrape → Clean → Upload to Gemini (all in one run)
 - 📚 **Built-in Citations** - Every answer includes source documents
-- ♾️ **Unlimited Free Queries** - Pay once to scrape, query forever (no storage fees)
+- ♾️ **Unlimited Free Queries** - After initial indexing, query forever at no additional cost
 - 🎯 **Challenge Compliant** - 100% banned scraper filtering (Instagram, Amazon, Google Maps, etc.)
 - 🚀 **Zero Setup** - Just provide URL + Gemini API key
 - 💰 **Cost Optimized** - Smart scraper selection based on your budget
@@ -138,44 +138,63 @@ print(response.text)  # Answer with citations
 
 ## How Much Does It Cost?
 
-This Actor uses **pay-per-page pricing** for transparent, predictable costs:
+**IMPORTANT:** The total cost includes THREE separate components billed by different services:
 
-### Base Pricing
+### 1. Actor Fees (Charged by This Actor)
+
+This Actor uses **pay-per-page pricing**:
 
 - **Actor start**: $0.02 per run (one-time)
 - **Page processed**: $0.0015 per page (base price)
 
-### Store Discount Tiers
+**Store Discount Tiers** - Your Apify subscription plan determines automatic discounts:
 
-Your Apify subscription plan determines automatic discounts:
-
-| Plan | Monthly Cost | Discount | Price/Page | 100 Pages Total |
-|------|--------------|----------|------------|-----------------|
+| Plan | Monthly Cost | Discount | Actor Price/Page | Actor Cost (100 Pages) |
+|------|--------------|----------|------------------|------------------------|
 | **Free** | $0 | 0% | $0.0015 | **$0.17** |
 | **Starter** | $39 | 10% (BRONZE) | $0.00135 | **$0.155** |
 | **Scale** | $199 | 20% (SILVER) | $0.0012 | **$0.14** |
 | **Business** | $999 | 30% (GOLD) | $0.00105 | **$0.125** |
 
-💰 **Upgrade your Apify plan to save up to 30% on processing costs!**
+💰 **Upgrade your Apify plan to save up to 30% on actor fees!**
 
-### Example Costs
+### 2. Apify Scraper Costs (Charged by Apify Platform)
 
-| Pages | FREE Tier | GOLD Tier | Savings |
-|-------|-----------|-----------|---------|
-| 10 | $0.035 | $0.03 | 14% |
-| 50 | $0.095 | $0.07 | 26% |
-| 100 | $0.17 | $0.125 | 26% |
-| 500 | $0.77 | $0.545 | 29% |
+The actor uses Apify scrapers to extract content. **You pay Apify separately** for:
+- Scraper compute time (varies by scraper and site complexity)
+- Typical cost: **$0.001-0.01 per page** (depends on scraper_budget setting)
+- Billed from your Apify platform credits
 
-*Prices include ~$0.02 actor start fee*
+**Example for 100 pages:**
+- Minimal budget: ~$0.10 (simple HTML scrapers)
+- Optimal budget: ~$0.50 (balanced performance)
+- Premium budget: ~$1.00+ (advanced AI scrapers)
 
-### What You DON'T Pay (to This Actor)
+### 3. Gemini API Costs (Charged by Google)
 
-✅ **Gemini API costs** - You provide your own API key (billed per Google's pricing)
-✅ **Apify platform usage** - You manage your own credits
-✅ **Pass-through fees** - No markup on Gemini or Apify costs
+Google charges for **document indexing** when uploading to File Search:
+- **Indexing**: ~$0.15 per 1 million tokens (~$0.01-0.10 for typical 100-page sites)
+- **Storage**: FREE (indefinite, no ongoing fees)
+- **Query embeddings**: FREE (unlimited queries after indexing)
 
-**Note:** Gemini charges for indexing (~$0.15/1M tokens). Storage and query embeddings are free. See [Gemini pricing](https://ai.google.dev/pricing).
+See [Gemini pricing](https://ai.google.dev/pricing) for current rates.
+
+### Total Cost Example (100 Pages)
+
+| Component | Cost (Typical) |
+|-----------|----------------|
+| Actor fee (FREE tier) | $0.17 |
+| Apify scraper (optimal) | ~$0.50 |
+| Gemini indexing | ~$0.05 |
+| **TOTAL** | **~$0.72** |
+
+**After indexing:** Query unlimited times at $0 additional cost.
+
+### What You DON'T Pay to This Actor
+
+✅ **Apify scraper costs** - Billed separately by Apify platform (from your credits)
+✅ **Gemini API costs** - Billed separately by Google (from your Gemini API key)
+✅ **Pass-through fees** - No markup; you pay Apify and Google directly
 
 ### Comparison
 
